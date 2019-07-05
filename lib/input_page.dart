@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'reusable_card.dart';
 import 'gender_card_content.dart';
 import 'constants.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum Gender { male, female }
 
@@ -14,13 +15,14 @@ class _InputPageState extends State<InputPage> {
   Gender selectedGender;
   int height = 180;
   int weight = 60;
+  int age = 23;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Text(
-            'BMI CALCULATOR',
+            'BMI指数计算器',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -42,7 +44,7 @@ class _InputPageState extends State<InputPage> {
                         : kInactiveCardColor,
                     cardChild: GenderCardContent(
                       genderIcon: kMaleIcon,
-                      gender: "MALE",
+                      gender: "男性",
                       labelTextStyle: kLabelStyle,
                     ),
                     onPress: () {
@@ -59,7 +61,7 @@ class _InputPageState extends State<InputPage> {
                         : kInactiveCardColor,
                     cardChild: GenderCardContent(
                       genderIcon: kFemaleIcon,
-                      gender: "FEMALE",
+                      gender: "女性",
                       labelTextStyle: kLabelStyle,
                     ),
                     onPress: () {
@@ -88,7 +90,7 @@ class _InputPageState extends State<InputPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'HEIGHT',
+                          '身高',
                           style: kLabelStyle,
                         ),
                         Row(
@@ -104,7 +106,7 @@ class _InputPageState extends State<InputPage> {
                               width: 10.0,
                             ),
                             Text(
-                              'cm',
+                              '厘米',
                               style: kLabelStyle,
                             ),
                           ],
@@ -154,7 +156,7 @@ class _InputPageState extends State<InputPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "WEIGHT",
+                          "体重",
                           style: kLabelStyle,
                         ),
                         Text(
@@ -164,22 +166,24 @@ class _InputPageState extends State<InputPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            FloatingActionButton(
-                              backgroundColor: Color(0xFF1C2033),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
+                            SmallIconButton(
+                              smallIcon: FontAwesomeIcons.minus,
+                              buttonAction: () {
+                                setState(() {
+                                  weight -= 1;
+                                });
+                              },
                             ),
                             SizedBox(
-                              width: 15.0,
+                              width: 5.0,
                             ),
-                            FloatingActionButton(
-                              backgroundColor: Color(0xFF1C2033),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
+                            SmallIconButton(
+                              smallIcon: FontAwesomeIcons.plus,
+                              buttonAction: () {
+                                setState(() {
+                                  weight += 1;
+                                });
+                              },
                             ),
                           ],
                         )
@@ -190,6 +194,43 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: ReusableCard(
                     cardColor: kInactiveCardColor,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "年龄",
+                          style: kLabelStyle,
+                        ),
+                        Text(
+                          age.toString(),
+                          style: kNumberStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SmallIconButton(
+                              smallIcon: FontAwesomeIcons.minus,
+                              buttonAction: () {
+                                setState(() {
+                                  age -= 1;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            SmallIconButton(
+                              smallIcon: FontAwesomeIcons.plus,
+                              buttonAction: () {
+                                setState(() {
+                                  age += 1;
+                                });
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -205,7 +246,7 @@ class _InputPageState extends State<InputPage> {
             height: kBottomContainerHeight,
             child: Center(
               child: Text(
-                'CALCULATE YOUR MBI',
+                '点我出结果！',
                 style: TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
@@ -214,6 +255,28 @@ class _InputPageState extends State<InputPage> {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class SmallIconButton extends StatelessWidget {
+  SmallIconButton({this.smallIcon, this.buttonAction});
+  final IconData smallIcon;
+  final Function buttonAction;
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: Icon(smallIcon),
+      elevation: 6.0,
+      fillColor: Color(0xFF1C2033),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(13),
+      ),
+      onPressed: buttonAction,
+      constraints: BoxConstraints.tightFor(
+        width: 56.0,
+        height: 56.0,
       ),
     );
   }

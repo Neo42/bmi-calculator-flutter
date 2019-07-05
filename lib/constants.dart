@@ -8,6 +8,6 @@ const Color kInactiveCardColor = Color(0xFF101427);
 const IconData kMaleIcon = FontAwesomeIcons.mars;
 const IconData kFemaleIcon = FontAwesomeIcons.venus;
 const TextStyle kLabelStyle =
-    TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
+    TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold);
 const TextStyle kNumberStyle =
     TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
