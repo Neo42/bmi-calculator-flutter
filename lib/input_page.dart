@@ -3,6 +3,8 @@ import 'reusable_card.dart';
 import 'gender_card_content.dart';
 import 'constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'results_page.dart';
+import 'calculator_brain.dart';
 
 enum Gender { male, female }
 
@@ -166,8 +168,8 @@ class _InputPageState extends State<InputPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SmallIconButton(
-                              smallIcon: FontAwesomeIcons.minus,
+                            KnobIconButton(
+                              buttonIcon: FontAwesomeIcons.minus,
                               buttonAction: () {
                                 setState(() {
                                   weight -= 1;
@@ -177,8 +179,8 @@ class _InputPageState extends State<InputPage> {
                             SizedBox(
                               width: 5.0,
                             ),
-                            SmallIconButton(
-                              smallIcon: FontAwesomeIcons.plus,
+                            KnobIconButton(
+                              buttonIcon: FontAwesomeIcons.plus,
                               buttonAction: () {
                                 setState(() {
                                   weight += 1;
@@ -208,8 +210,8 @@ class _InputPageState extends State<InputPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SmallIconButton(
-                              smallIcon: FontAwesomeIcons.minus,
+                            KnobIconButton(
+                              buttonIcon: FontAwesomeIcons.minus,
                               buttonAction: () {
                                 setState(() {
                                   age -= 1;
@@ -219,8 +221,8 @@ class _InputPageState extends State<InputPage> {
                             SizedBox(
                               width: 5.0,
                             ),
-                            SmallIconButton(
-                              smallIcon: FontAwesomeIcons.plus,
+                            KnobIconButton(
+                              buttonIcon: FontAwesomeIcons.plus,
                               buttonAction: () {
                                 setState(() {
                                   age += 1;
@@ -239,18 +241,30 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColor,
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kBottomContainerHeight,
-            child: Center(
-              child: Text(
-                '点我出结果！',
-                style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: () {
+              CalculatorBrain calc =
+                  CalculatorBrain(weight: weight, height: height);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultsPage(
+                        bmiResult: calc.getBMI(),
+                        resultText: calc.getResult(),
+                        advice: calc.getAdvice(),
+                      ),
                 ),
+              );
+            },
+            child: Container(
+              color: kBottomContainerColor,
+              margin: EdgeInsets.only(top: 10.0),
+              padding: EdgeInsets.only(bottom: 12.0),
+              width: double.infinity,
+              height: kBottomContainerHeight,
+              child: Center(
+                child: Text('点我出结果！', style: kButtonTextStyle),
               ),
             ),
           )
@@ -260,18 +274,18 @@ class _InputPageState extends State<InputPage> {
   }
 }
 
-class SmallIconButton extends StatelessWidget {
-  SmallIconButton({this.smallIcon, this.buttonAction});
-  final IconData smallIcon;
+class KnobIconButton extends StatelessWidget {
+  KnobIconButton({this.buttonIcon, this.buttonAction});
+  final IconData buttonIcon;
   final Function buttonAction;
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      child: Icon(smallIcon),
-      elevation: 6.0,
+      child: Icon(buttonIcon),
+//      elevation: 6.0,
       fillColor: Color(0xFF1C2033),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(13),
+        borderRadius: BorderRadius.circular(15),
       ),
       onPressed: buttonAction,
       constraints: BoxConstraints.tightFor(
